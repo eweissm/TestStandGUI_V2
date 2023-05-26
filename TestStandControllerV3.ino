@@ -23,11 +23,11 @@
 #define wf_B 45
 
 //  distance sensors
-#define trigPin_L 9
-#define trigPin_R 10
+#define trigPin_L 5
+#define trigPin_R 7
 
-#define echoPin_L 6
-#define echoPin_R 5
+#define echoPin_L 4
+#define echoPin_R 6
 
 //duration for signal to return from ultrasonic sensor
 long duration;
@@ -36,6 +36,9 @@ long duration;
 float distance_L;
 float distance_R;
 
+//Sensor reading offset (distance between actuator's zero and actual zero
+float offset = 10;
+
 //Wire feeder feed rate (0 to 255)
 int feedRate = 255;
 
@@ -43,7 +46,7 @@ int feedRate = 255;
 float positionTolerance = .2;
 
 //arbitrarily defining the target location for the actuators
-float targetPosition = 10;
+float targetPosition = 5;
 
 //The number of sensor reading to keep which will be used for a moving average
 const int numValues = 10;
@@ -99,8 +102,8 @@ void setup() {
 void loop() {
 
   //Get distance reading from sensors
-  distance_L = getUltrasonicSensorDistance(echoPin_L, trigPin_L);
-  distance_R = getUltrasonicSensorDistance(echoPin_R, trigPin_R);
+  distance_L = getUltrasonicSensorDistance(echoPin_L, trigPin_L)-offset;
+  distance_R = getUltrasonicSensorDistance(echoPin_R, trigPin_R)-offset;
 
   //          Computing the rolling avg------------------------------------------------------------------------------------------------------
 
@@ -128,12 +131,14 @@ void loop() {
   float avgDist_R = total_R / numValues;
   float avgDist_L = total_L / numValues;
 
-  /*Serial.print("Left Distance reading:");
-  Serial.print(distance_L);
+  Serial.print("Left Distance reading:");
+  Serial.print(distance_R);
 
   Serial.print("     Avg:");
-  Serial.println(avgDist_L);
-*/
+  Serial.println(avgDist_R);
+
+  //delay for code stability
+  delay(10);
   //run wire feeder forward at specified feed rate--------------------------------------------------------------------------------------
   WF.run(0, feedRate);
 
@@ -158,15 +163,15 @@ void loop() {
 
       if (incomingByte == 'B') {
         ActuatorSelection = 0;
-        Serial.println("B");
+
       } else if (incomingByte == 'L') {
         ActuatorSelection = 1;
-        Serial.println("L");
+
       } else if (incomingByte == 'R') {
         ActuatorSelection = 2;
-        Serial.println("R");
+
       } else if (incomingByte == 'U') {
-        Serial.println("U");
+
         switch (ActuatorSelection) {
           case 0:
             R1.run(0, 255);
@@ -192,7 +197,7 @@ void loop() {
         L2.run(0, 0);
 
       } else if (incomingByte == 'D') {
-        Serial.println("D");
+
         switch (ActuatorSelection) {
           case 0:
             R1.run(1, 255);
@@ -223,10 +228,11 @@ void loop() {
       if (incomingByte == 'V') {
         input = Serial.readStringUntil('E');
         targetPosition = input.toInt();
+        Serial.println(input);
       }
     }
   }
-  
+
 
   //If on automated controls run actuators until they are at the targeted location
   if (!ManualControl) {
@@ -234,11 +240,9 @@ void loop() {
     R2.runUntil(avgDist_R, targetPosition, positionTolerance);
     L1.runUntil(avgDist_L, targetPosition, positionTolerance);
     L2.runUntil(avgDist_L, targetPosition, positionTolerance);
-    Serial.println(targetPosition);
+
   }
-  
-  //delay for code stability
-  delay(10);
+
 }
 
 //This Function takes an echoPin and a trigPin and returns the Distance from an ultrasonic sensor in cm
@@ -254,4 +258,5 @@ float getUltrasonicSensorDistance(int echoPin, int trigPin) {
   duration = pulseIn(echoPin, HIGH);
   // Calculate and return the distance
   return (duration * 0.034 / 2);
+  input = "";
 }
