@@ -39,6 +39,8 @@ def set_automated_controls_state():
         varLabel.set("Automated Controls: On ")
         ser.write(bytes('A', 'UTF-8')) #Automated Signal
 
+def set_update_target_state():
+    ser.write(bytes('V', 'UTF-8'))  # Update Signal
 
 
 def set_ButtonUp_state():
@@ -164,16 +166,16 @@ TargetHeightLable = tkinter.Label(master=AutoFrame, text='Enter Target Height: '
 TargetHeightEntry = tkinter.Entry(AutoFrame)
 TargetHeightEntry.pack(side='left', ipadx=0, padx=0, pady=0)
 
-button_Automated_on_off = tkinter.Button(AutoFrame,
-                                         text="Turn Automated Controls on/off",
-                                         command=set_automated_controls_state,
-                                         height=4,
+button_UpdateTarget = tkinter.Button(AutoFrame,
+                                         text="Update Target",
+                                         command=set_update_target_state,
+                                         height=2,
                                          fg="black",
-                                         width=25,
+                                         width=15,
                                          bd=5,
                                          activebackground='green'
                                          )
-button_Automated_on_off.pack(side='top', ipadx=0, padx=0, pady=0)
+button_UpdateTarget.pack(side='left', ipadx=0, padx=20, pady=20)
 
 
 AutoFrame.pack(fill=tkinter.BOTH, side=tkinter.LEFT, expand=True)
