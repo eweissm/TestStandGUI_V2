@@ -41,10 +41,11 @@ def set_automated_controls_state():
 
 def set_update_target_state():
     global TargetHeight
+    TargetHeight = TargetHeightEntry.get()
     ser.write(bytes('V', 'UTF-8'))  # Update Signal
     ser.write(bytes(TargetHeight, 'UTF-8'))  # send target Height
     ser.write(bytes('E', 'UTF-8'))  # send end Signal
-    TargetHeight = TargetHeightEntry.get()
+
     print(TargetHeight)
 
 
@@ -59,8 +60,6 @@ def set_ButtonDown_state():
 ser = serial.Serial('com5', 9600) #create Serial Object
 
 time.sleep(3) #delay 3 seconds to allow serial com to get established
-ser.write(bytes('L', 'UTF-8')) # send "L" to arduino to reset it when first connecting
-print("Reset Arduino")
 
 
 # Build GUI------------------------------------------------------------------------------------------------------------------------------------------------------------
