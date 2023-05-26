@@ -40,7 +40,12 @@ def set_automated_controls_state():
         ser.write(bytes('A', 'UTF-8')) #Automated Signal
 
 def set_update_target_state():
+    global TargetHeight
     ser.write(bytes('V', 'UTF-8'))  # Update Signal
+    ser.write(bytes(TargetHeight, 'UTF-8'))  # send target Height
+    ser.write(bytes('E', 'UTF-8'))  # send end Signal
+    TargetHeight = TargetHeightEntry.get()
+    print(TargetHeight)
 
 
 def set_ButtonUp_state():
@@ -181,8 +186,6 @@ button_UpdateTarget.pack(side='left', ipadx=0, padx=20, pady=20)
 AutoFrame.pack(fill=tkinter.BOTH, side=tkinter.LEFT, expand=True)
 
 TargetHeight = TargetHeightEntry.get()
-
-
 
 tkinter.mainloop() # run loop watching for gui interactions
 
