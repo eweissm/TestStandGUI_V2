@@ -1,3 +1,9 @@
+#Test Stand GUI V2
+#Date: 05/29/2023
+#By: Eric Weissman
+#Description: This code generates a GUI for the test stand controls. At the moment, this GUI offers both manual controls
+# and automatic controls which can be toggled between
+
 import serial
 import time
 import tkinter
