@@ -44,12 +44,9 @@ def set_automated_controls_state():
 def set_update_target_state():
     global TargetHeight
     TargetHeight = TargetHeightEntry.get()
-    ser.write(bytes('V', 'UTF-8'))  # Update Signal
-    ser.write(bytes(str(int(TargetHeight)), 'UTF-8'))  # send target Height
-    ser.write(bytes('E', 'UTF-8'))  # send end Signal
-    print(bytes('V', 'UTF-8'))
-    print(bytes(TargetHeight, 'UTF-8'))
-    print(bytes('E', 'UTF-8'))
+    ser.write(bytes('V'+str(int(TargetHeight))+'E', 'UTF-8'))  # Update Signal
+    print(bytes('V'+str(int(TargetHeight))+'E', 'UTF-8'))
+
 
 
 
