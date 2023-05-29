@@ -1,24 +1,27 @@
-#Test Stand GUI V2
-#Date: 05/29/2023
-#By: Eric Weissman
-#Description: This code generates a GUI for the test stand controls. At the moment, this GUI offers both manual controls
-# and automatic controls which can be toggled between
+# Test Stand GUI V2
+# Date: 05/29/2023
+# By: Eric Weissman
+# Description: This code generates a GUI for the test stand controls. At the moment, this GUI offers both manual controls
+# and automatic controls which can be toggled between.
 
+# TODO:
+#  add wire feed controls
+#  allow for g-code entries for automatic controls
+
+
+# import used packages
 import serial
 import time
 import tkinter
 
 
-# Define what happens when you push the  different buttons------------------------------------------------------------------------------------
-def set_ActuatorSelection_left_state():
+# Define buttons commands----------------------------------------------------------------------------------------------
+def buttonCommand_setActuatorSelectionLeft():
     global ActuatorSelection_state
     ActuatorSelection_state = 0
     ActuatorSelectionLabel.set("Left")
     ser.write(bytes('L', 'UTF-8'))  # left Signal
     print(bytes('L', 'UTF-8'))
-
-
-Automated_Controls_state = 0
 
 
 def set_ActuatorSelection_right_state():
@@ -47,12 +50,15 @@ def set_automated_controls_state():
         varLabel.set("Automated Controls: On ")
         ser.write(bytes('A', 'UTF-8')) #Automated Signal
         print(bytes('A', 'UTF-8'))
+
 def set_update_target_state():
     global TargetHeight
     TargetHeight = TargetHeightEntry.get()
     ser.write(bytes('V'+str(int(TargetHeight))+'E', 'UTF-8'))  # Update Signal
     print(bytes('V'+str(int(TargetHeight))+'E', 'UTF-8'))
-
+#FIXME: for some reason this simply will not  behave. When trying to update the target height, the program will
+# sometimes not update and will sometimes freeze and crash. Other times it will move the actuators to their lowest
+# position
 
 
 
@@ -65,6 +71,11 @@ def set_ButtonUp_state():
 def set_ButtonDown_state():
     ser.write(bytes('D', 'UTF-8')) #down Signal
     print(bytes('D', 'UTF-8'))
+
+
+
+Automated_Controls_state = 0
+
 
 #Set up Serial Communication with Arduino---------------------------------------------------------------------------------------------------------------------------------
 ser = serial.Serial('com3', 9600) #create Serial Object
@@ -95,7 +106,7 @@ RightButtonsLable = tkinter.Label(master=RightButtonsFrame, text='Up/Down Contro
 
 button_left_state = tkinter.Button(LeftButtonsFrame,
                                    text="Left",
-                                   command=set_ActuatorSelection_left_state,
+                                   command=buttonCommand_setActuatorSelectionLeft,
                                    height=4,
                                    fg="black",
                                    width=8,
