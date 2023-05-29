@@ -228,9 +228,12 @@ void loop() {
       if (incomingByte == 'V') {
         input = Serial.readStringUntil('E');
         targetPosition = input.toInt();
-        Serial.println(input);
+        Serial.flush();
       }
+      Serial.flush();
     }
+
+    Serial.flush();
   }
 
 
