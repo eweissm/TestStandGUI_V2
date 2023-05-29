@@ -9,6 +9,7 @@ def set_ActuatorSelection_left_state():
     ActuatorSelection_state = 0
     ActuatorSelectionLabel.set("Left")
     ser.write(bytes('L', 'UTF-8'))  # left Signal
+    print(bytes('L', 'UTF-8'))
 
 
 Automated_Controls_state = 0
@@ -19,14 +20,14 @@ def set_ActuatorSelection_right_state():
     ActuatorSelection_state = 1
     ActuatorSelectionLabel.set("Right")
     ser.write(bytes('R', 'UTF-8'))  # right Signal
-
+    print(bytes('R', 'UTF-8'))
 
 def set_ActuatorSelection_both_state():
     global ActuatorSelection_state
     ActuatorSelection_state = 2
     ActuatorSelectionLabel.set("Both")
     ser.write(bytes('B', 'UTF-8'))  # both Signal
-
+    print(bytes('B', 'UTF-8'))
 
 def set_automated_controls_state():
     global Automated_Controls_state
@@ -34,33 +35,38 @@ def set_automated_controls_state():
         Automated_Controls_state = 0
         varLabel.set("Automated Controls: Off ")
         ser.write(bytes('M', 'UTF-8')) #Manual Signal
+        print(bytes('M', 'UTF-8'))
     else:
         Automated_Controls_state = 1
         varLabel.set("Automated Controls: On ")
         ser.write(bytes('A', 'UTF-8')) #Automated Signal
-
+        print(bytes('A', 'UTF-8'))
 def set_update_target_state():
     global TargetHeight
-    ser.write(bytes('V', 'UTF-8'))  # Update Signal
-    ser.write(bytes(TargetHeight, 'UTF-8'))  # send target Height
-    ser.write(bytes('E', 'UTF-8'))  # send end Signal
     TargetHeight = TargetHeightEntry.get()
-    print(TargetHeight)
+    ser.write(bytes('V', 'UTF-8'))  # Update Signal
+    ser.write(bytes(str(int(TargetHeight)), 'UTF-8'))  # send target Height
+    ser.write(bytes('E', 'UTF-8'))  # send end Signal
+    print(bytes('V', 'UTF-8'))
+    print(bytes(TargetHeight, 'UTF-8'))
+    print(bytes('E', 'UTF-8'))
+
+
 
 
 def set_ButtonUp_state():
     ser.write(bytes('U', 'UTF-8')) #up Signal
+    print(bytes('U', 'UTF-8'))
 
 
 def set_ButtonDown_state():
     ser.write(bytes('D', 'UTF-8')) #down Signal
+    print(bytes('D', 'UTF-8'))
 
 #Set up Serial Communication with Arduino---------------------------------------------------------------------------------------------------------------------------------
-ser = serial.Serial('com5', 9600) #create Serial Object
+ser = serial.Serial('com3', 9600) #create Serial Object
 
 time.sleep(3) #delay 3 seconds to allow serial com to get established
-ser.write(bytes('L', 'UTF-8')) # send "L" to arduino to reset it when first connecting
-print("Reset Arduino")
 
 
 # Build GUI------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -184,8 +190,6 @@ button_UpdateTarget.pack(side='left', ipadx=0, padx=20, pady=20)
 
 
 AutoFrame.pack(fill=tkinter.BOTH, side=tkinter.LEFT, expand=True)
-
-TargetHeight = TargetHeightEntry.get()
 
 tkinter.mainloop() # run loop watching for gui interactions
 
