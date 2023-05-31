@@ -56,9 +56,7 @@ def buttonCommand_toggleAutomatedControls(): #toggles between manual and automat
 def buttonCommand_updateTargetHeight(): #Reads the txt entry and sends to serial message arduino to update target height
     global TargetHeight
     TargetHeight = TargetHeightEntry.get()
-    ser.write(bytes('V', 'UTF-8'))
-    ser.write(bytes(str(int(TargetHeight)), 'UTF-8'))
-    ser.write(bytes('E', 'UTF-8'))
+    ser.write(bytes('V'+str(int(TargetHeight))+'E', 'UTF-8'))
     print(bytes('V'+str(int(TargetHeight))+'E', 'UTF-8'))
 
 #FIXME: for some reason this simply will not  behave. When trying to update the target height, the program will
