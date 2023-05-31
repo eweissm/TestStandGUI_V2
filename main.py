@@ -16,81 +16,83 @@ import tkinter
 
 
 # Define buttons commands----------------------------------------------------------------------------------------------
-def buttonCommand_setActuatorSelectionLeft():
+def buttonCommand_setActuatorSelectionLeft(): #set manual controls to actuate only the left actuators
     global ActuatorSelection_state
     ActuatorSelection_state = 0
     ActuatorSelectionLabel.set("Left")
-    ser.write(bytes('L', 'UTF-8'))  # left Signal
-    print(bytes('L', 'UTF-8'))
+    ser.write(bytes('LE', 'UTF-8'))  # left Signal
+    print(bytes('LE', 'UTF-8'))
 
 
-def set_ActuatorSelection_right_state():
+def buttonCommand_setActuatorSelectionRight():  #set manual controls to actuate only the right actuators
     global ActuatorSelection_state
     ActuatorSelection_state = 1
     ActuatorSelectionLabel.set("Right")
-    ser.write(bytes('R', 'UTF-8'))  # right Signal
-    print(bytes('R', 'UTF-8'))
+    ser.write(bytes('RE', 'UTF-8'))  # right Signal
+    print(bytes('RE', 'UTF-8'))
 
-def set_ActuatorSelection_both_state():
+def buttonCommand_setActuatorSelectionBoth():  #set manual controls to actuate both side of actuators
     global ActuatorSelection_state
     ActuatorSelection_state = 2
     ActuatorSelectionLabel.set("Both")
-    ser.write(bytes('B', 'UTF-8'))  # both Signal
-    print(bytes('B', 'UTF-8'))
+    ser.write(bytes('BE', 'UTF-8'))  # both Signal
+    print(bytes('BE', 'UTF-8'))
 
-def set_automated_controls_state():
+def buttonCommand_toggleAutomatedControls(): #toggles between manual and automated controls
     global Automated_Controls_state
+
+    # if we are in automated controls --> set to manual--> else set controls to automatic
     if Automated_Controls_state == 1:
         Automated_Controls_state = 0
         varLabel.set("Automated Controls: Off ")
-        ser.write(bytes('M', 'UTF-8')) #Manual Signal
-        print(bytes('M', 'UTF-8'))
+        ser.write(bytes('ME', 'UTF-8')) #Manual Signal
+        print(bytes('ME', 'UTF-8'))
     else:
         Automated_Controls_state = 1
         varLabel.set("Automated Controls: On ")
-        ser.write(bytes('A', 'UTF-8')) #Automated Signal
-        print(bytes('A', 'UTF-8'))
+        ser.write(bytes('AE', 'UTF-8')) #Automated Signal
+        print(bytes('AE', 'UTF-8'))
 
-def set_update_target_state():
+def buttonCommand_updateTargetHeight(): #Reads the txt entry and sends to serial message arduino to update target height
     global TargetHeight
     TargetHeight = TargetHeightEntry.get()
-    ser.write(bytes('V'+str(int(TargetHeight))+'E', 'UTF-8'))  # Update Signal
+    ser.write(bytes('V', 'UTF-8'))
+    ser.write(bytes(str(int(TargetHeight)), 'UTF-8'))
+    ser.write(bytes('E', 'UTF-8'))
     print(bytes('V'+str(int(TargetHeight))+'E', 'UTF-8'))
+
 #FIXME: for some reason this simply will not  behave. When trying to update the target height, the program will
 # sometimes not update and will sometimes freeze and crash. Other times it will move the actuators to their lowest
 # position
 
 
+def buttonCommand_moveUp():  # manual control for moving up
+    ser.write(bytes('UE', 'UTF-8'))  # up Signal
+    print(bytes('UE', 'UTF-8'))
 
 
-def set_ButtonUp_state():
-    ser.write(bytes('U', 'UTF-8')) #up Signal
-    print(bytes('U', 'UTF-8'))
+def buttonCommand_moveDown():  # manual control for moving down
+    ser.write(bytes('DE', 'UTF-8'))  # down Signal
+    print(bytes('DE', 'UTF-8'))
 
 
-def set_ButtonDown_state():
-    ser.write(bytes('D', 'UTF-8')) #down Signal
-    print(bytes('D', 'UTF-8'))
-
-
-
+# declare the automated controls to default at 0 (manual controls)
 Automated_Controls_state = 0
 
 
-#Set up Serial Communication with Arduino---------------------------------------------------------------------------------------------------------------------------------
-ser = serial.Serial('com3', 9600) #create Serial Object
+# Set up Serial Communication with Arduino------------------------------------------------------------------------------
+ser = serial.Serial('com3', 9600,writeTimeout=1)  # create Serial Object
+time.sleep(3)  # delay 3 seconds to allow serial com to get established
 
-time.sleep(3) #delay 3 seconds to allow serial com to get established
 
-
-# Build GUI------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Build GUI-------------------------------------------------------------------------------------------------------------
 tkTop = tkinter.Tk()  # Create GUI Box
 tkTop.geometry('1200x800')  # size of GUI
 tkTop.title("Test Stand Controller")  # title in top left of window
 
 Title = tkinter.Label(text='Test Stand Controls', font=("Courier", 14, 'bold')).pack()  # Title on top middle of screen
 
-# Fill in the Manual controls Side----------------------------------------------------------------------------------------------------------------------------------------
+# Fill in the Manual controls Side--------------------------------------------------------------------------------------
 ManualFrame = tkinter.Frame(master=tkTop, width=600) # create frame for the manual controls
 ManualLable = tkinter.Label(master=ManualFrame, text='Manual Controls',
                             font=("Courier", 12, 'bold')).pack()  # manual controls lable
@@ -117,7 +119,7 @@ button_left_state.pack(side='top', ipadx=10, padx=10, pady=40)
 
 button_right_state = tkinter.Button(LeftButtonsFrame,
                                     text="Right",
-                                    command=set_ActuatorSelection_right_state,
+                                    command=buttonCommand_setActuatorSelectionRight,
                                     height=4,
                                     fg="black",
                                     width=8,
@@ -128,7 +130,7 @@ button_right_state.pack(side='top', ipadx=10, padx=10, pady=40)
 
 button_both_state = tkinter.Button(LeftButtonsFrame,
                                    text="Both",
-                                   command=set_ActuatorSelection_both_state,
+                                   command=buttonCommand_setActuatorSelectionBoth,
                                    height=4,
                                    fg="black",
                                    width=8,
@@ -143,7 +145,7 @@ ActuatorSelection.pack()
 
 button_up_state = tkinter.Button(RightButtonsFrame,
                                  text="Up",
-                                 command=set_ButtonUp_state,
+                                 command=buttonCommand_moveUp,
                                  height=4,
                                  fg="black",
                                  width=8,
@@ -154,7 +156,7 @@ button_up_state.pack(side='top', ipadx=10, padx=10, pady=40)
 
 button_down_state = tkinter.Button(RightButtonsFrame,
                                    text="Down",
-                                   command=set_ButtonDown_state,
+                                   command=buttonCommand_moveDown,
                                    height=4,
                                    fg="black",
                                    width=8,
@@ -173,7 +175,7 @@ AutoLable = tkinter.Label(master=AutoFrame, text='Automated Controls', font=("Co
 
 button_Automated_on_off = tkinter.Button(AutoFrame,
                                          text="Turn Automated Controls on/off",
-                                         command=set_automated_controls_state,
+                                         command=buttonCommand_toggleAutomatedControls,
                                          height=4,
                                          fg="black",
                                          width=25,
@@ -192,14 +194,14 @@ TargetHeightEntry = tkinter.Entry(AutoFrame)
 TargetHeightEntry.pack(side='left', ipadx=0, padx=0, pady=0)
 
 button_UpdateTarget = tkinter.Button(AutoFrame,
-                                         text="Update Target",
-                                         command=set_update_target_state,
-                                         height=2,
-                                         fg="black",
-                                         width=15,
-                                         bd=5,
-                                         activebackground='green'
-                                         )
+                                     text="Update Target",
+                                     command=buttonCommand_updateTargetHeight,
+                                     height=2,
+                                     fg="black",
+                                     width=15,
+                                     bd=5,
+                                     activebackground='green'
+                                     )
 button_UpdateTarget.pack(side='left', ipadx=0, padx=20, pady=20)
 
 
