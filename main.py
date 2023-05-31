@@ -59,10 +59,6 @@ def buttonCommand_updateTargetHeight(): #Reads the txt entry and sends to serial
     ser.write(bytes('V'+str(int(TargetHeight))+'E', 'UTF-8'))
     print(bytes('V'+str(int(TargetHeight))+'E', 'UTF-8'))
 
-#FIXME: for some reason this simply will not  behave. When trying to update the target height, the program will
-# sometimes not update and will sometimes freeze and crash. Other times it will move the actuators to their lowest
-# position
-
 
 def buttonCommand_moveUp():  # manual control for moving up
     ser.write(bytes('UE', 'UTF-8'))  # up Signal
