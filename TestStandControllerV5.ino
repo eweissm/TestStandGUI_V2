@@ -1,6 +1,6 @@
-//Test Stand Controller V3
-//By: Eric Weissman
-//Date: 05/23/2023
+//Test Stand Controller V5
+//By: Eric Weissman and Kalob Askey
+//Date: 05/31/2023
 
 #include "Motor.h"
 
@@ -37,7 +37,7 @@ float distance_L;
 float distance_R;
 
 //Sensor reading offset (distance between actuator's zero and actual zero
-float offset = 10;
+float offset = 10.8;
 
 //Wire feeder feed rate (0 to 255)
 int feedRate = 255;
@@ -102,8 +102,8 @@ void setup() {
 void loop() {
 
   //Get distance reading from sensors
-  distance_L = getUltrasonicSensorDistance(echoPin_L, trigPin_L)-offset;
-  distance_R = getUltrasonicSensorDistance(echoPin_R, trigPin_R)-offset;
+  distance_L = getUltrasonicSensorDistance(echoPin_L, trigPin_L) - offset;
+  distance_R = getUltrasonicSensorDistance(echoPin_R, trigPin_R) - offset;
 
   //          Computing the rolling avg------------------------------------------------------------------------------------------------------
 
@@ -131,12 +131,12 @@ void loop() {
   float avgDist_R = total_R / numValues;
   float avgDist_L = total_L / numValues;
 
-  Serial.print("Left Distance reading:");
+ /* Serial.print("Left Distance reading:");
   Serial.print(distance_R);
 
   Serial.print("     Avg:");
   Serial.println(avgDist_R);
-
+*/
   //delay for code stability
   delay(10);
   //run wire feeder forward at specified feed rate--------------------------------------------------------------------------------------
@@ -144,33 +144,33 @@ void loop() {
 
   // read GUI and follow Commands------------------------------------------------------------------------------------------------------------
   if (Serial.available()) {
-    // read the oldest byte in the serial buffer:
-    incomingByte = Serial.read();
 
+    input = Serial.readStringUntil('E');
+    Serial.println(input);
     //Update manual or automatic control selection
-    if (incomingByte == 'M') {
+    if (input.charAt(0) == 'M') {
       ManualControl = true;
       R1.run(0, 0);
       R2.run(0, 0);
       L1.run(0, 0);
       L2.run(0, 0);
-    } else if (incomingByte == 'A') {
+    } else if (input.charAt(0) == 'A') {
       ManualControl = false;
     }
 
     //manual control------------------------
     if (ManualControl) {
 
-      if (incomingByte == 'B') {
+      if (input.charAt(0) == 'B') {
         ActuatorSelection = 0;
 
-      } else if (incomingByte == 'L') {
+      } else if (input.charAt(0) == 'L') {
         ActuatorSelection = 1;
 
-      } else if (incomingByte == 'R') {
+      } else if (input.charAt(0) == 'R') {
         ActuatorSelection = 2;
 
-      } else if (incomingByte == 'U') {
+      } else if (input.charAt(0) == 'U') {
 
         switch (ActuatorSelection) {
           case 0:
@@ -196,7 +196,7 @@ void loop() {
         L1.run(0, 0);
         L2.run(0, 0);
 
-      } else if (incomingByte == 'D') {
+      } else if (input.charAt(0) == 'D') {
 
         switch (ActuatorSelection) {
           case 0:
@@ -224,16 +224,14 @@ void loop() {
       }
     }
     // Automated Controls--------------------------------------------------------------------------------------------------
-    if (!ManualControl) {
-      if (incomingByte == 'V') {
-        input = Serial.readStringUntil('E');
-        targetPosition = input.toInt();
-        Serial.flush();
+    if (!ManualControl && input.length() > 1) {
+      if (input.charAt(0) == 'V') {
+        targetPosition = input.substring(1, input.length()).toInt();
+        Serial.println(targetPosition);
       }
-      Serial.flush();
     }
-
-    Serial.flush();
+    Serial.end();
+    Serial.begin(9600);
   }
 
 
@@ -243,9 +241,7 @@ void loop() {
     R2.runUntil(avgDist_R, targetPosition, positionTolerance);
     L1.runUntil(avgDist_L, targetPosition, positionTolerance);
     L2.runUntil(avgDist_L, targetPosition, positionTolerance);
-
   }
-
 }
 
 //This Function takes an echoPin and a trigPin and returns the Distance from an ultrasonic sensor in cm
