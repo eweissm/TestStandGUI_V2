@@ -77,6 +77,10 @@ def buttonCommand_FeedWireBackward():  #manual control for feeding the wire back
     ser.write(bytes('KE', 'UTF-8'))   # wire backward signal
     print(bytes('KE', 'UTF-8'))
 
+def buttonCommand_STOP(): # manual control for stopping wire feed
+    ser.write(bytes('SE','UTF-8')) # wire stop signal
+    print(bytes('KE','UTF-8'))
+
 def buttonCommand_updateTargetSpeed(): #Reads the txt entry and sends to serial message arduino to update target speed
     global TargetSpeed
     TargetSpeed = TargetSpeedEntry.get()
@@ -234,7 +238,7 @@ AutoFrame.grid(row = 1, column = 1, stick='N')
 ManualFrameWF = tkinter.Frame(master=tkTop, height=200, width=600)
 ManWFLabel = tkinter.Label(master=ManualFrameWF,
                            text='Manual Wire Feed Controls',
-                           font=("Courier", 12, 'bold')).grid(row=0, column=0, rowspan = 1, columnspan = 6, pady=20)  # Manual wire feed controls label
+                           font=("Courier", 12, 'bold')).grid(row=0, column=0, rowspan = 1, columnspan = 3, pady=20)  # Manual wire feed controls label
 
 button_FeedWireBack = tkinter.Button(ManualFrameWF,
                                      text="Backward",
@@ -244,7 +248,7 @@ button_FeedWireBack = tkinter.Button(ManualFrameWF,
                                      width=15,
                                      bd=5,
                                      activebackground='green')
-button_FeedWireBack.grid(row=1,column=0, columnspan=3, pady=20)
+button_FeedWireBack.grid(row=1,column=0, columnspan=1, pady=20, padx=10)
 
 button_FeedWireFwd = tkinter.Button(master=ManualFrameWF,
                                      text="Forward",
@@ -254,7 +258,17 @@ button_FeedWireFwd = tkinter.Button(master=ManualFrameWF,
                                      width=15,
                                      bd=5,
                                      activebackground='green')
-button_FeedWireFwd.grid(row=1, column=3, columnspan=3, pady=20)
+button_FeedWireFwd.grid(row=1, column=2, columnspan=1, pady=20, padx=10)
+
+button_Stop = tkinter.Button(master=ManualFrameWF,
+                                     text="STOP",
+                                     command=buttonCommand_STOP,
+                                     height=2,
+                                     fg="black",
+                                     width=15,
+                                     bd=5,
+                                     activebackground='green')
+button_Stop.grid(row=1, column=1, columnspan=1, pady=20, padx=10)
 
 ManualFrameWF.grid(row=2, column=0, pady=20)
 
