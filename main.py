@@ -69,6 +69,34 @@ def buttonCommand_moveDown():  # manual control for moving down
     ser.write(bytes('DE', 'UTF-8'))  # down Signal
     print(bytes('DE', 'UTF-8'))
 
+def buttonCommand_FeedWireForward():  # manual control for feeding the wire forward
+    ser.write(bytes('FE', 'UTF-8'))   # wire forward signal
+    print(bytes('FE', 'UTF-8'))
+
+def buttonCommand_FeedWireBackward():  #manual control for feeding the wire backward
+    ser.write(bytes('KE', 'UTF-8'))   # wire backward signal
+    print(bytes('KE', 'UTF-8'))
+
+def buttonCommand_updateTargetSpeed(): #Reads the txt entry and sends to serial message arduino to update target speed
+    global TargetSpeed
+    TargetSpeed = TargetSpeedEntry.get()
+    ser.write(bytes('S'+str(int(TargetSpeed))+'E', 'UTF-8'))
+    print(bytes('S'+str(int(TargetSpeed))+'E', 'UTF-8'))
+
+def buttonCommand_updateAutoOnOff(): # Toggles between manual and automated control of wire feed speed
+    global Automated_Controls_state
+
+    # if we are in automated controls --> set to manual--> else set controls to automatic
+    if Automated_Controls_state == 1:
+        Automated_Controls_state = 0
+        varLabel1.set("Automated Wire Feed Controls: Off ")
+        ser.write(bytes('NE', 'UTF-8'))  # Manual Signal
+        print(bytes('NE', 'UTF-8'))
+    else:
+        Automated_Controls_state = 1
+        varLabel1.set("Automated Wire Feed Controls: On ")
+        ser.write(bytes('GE', 'UTF-8'))  # Automated Signal
+        print(bytes('GE', 'UTF-8'))
 
 # declare the automated controls to default at 0 (manual controls)
 Automated_Controls_state = 0
@@ -84,13 +112,14 @@ tkTop = tkinter.Tk()  # Create GUI Box
 tkTop.geometry('1200x800')  # size of GUI
 tkTop.title("Test Stand Controller")  # title in top left of window
 
-Title = tkinter.Label(text='Test Stand Controls', font=("Courier", 14, 'bold')).pack()  # Title on top middle of screen
+Title = tkinter.Label(tkTop,text='Test Stand Controls', font=("Courier", 14, 'bold')).grid(row=0, column=0, rowspan=1, columnspan=2)  # Title on top middle of screen
+
 
 # Fill in the Manual controls Side--------------------------------------------------------------------------------------
-ManualFrame = tkinter.Frame(master=tkTop, width=600) # create frame for the manual controls
+ManualFrame = tkinter.Frame(master=tkTop, height=200, width=600) # create frame for the manual controls
 ManualLable = tkinter.Label(master=ManualFrame, text='Manual Controls',
                             font=("Courier", 12, 'bold')).pack()  # manual controls lable
-ManualFrame.pack(fill=tkinter.BOTH, side=tkinter.LEFT, expand=True)
+ManualFrame.grid(row=1, column=0)
 
 LeftButtonsFrame = tkinter.Frame(master=ManualFrame, width=100)
 LeftButtonsLable = tkinter.Label(master=LeftButtonsFrame, text='Actuator Selection',
@@ -163,9 +192,9 @@ LeftButtonsFrame.pack(fill=tkinter.BOTH, side=tkinter.LEFT, expand=True)
 RightButtonsFrame.pack(fill=tkinter.BOTH, side=tkinter.LEFT, expand=True)
 
 # Fill in the Automated controls Side----------------------------------------------------------------------------------------------------------------------------------------
-AutoFrame = tkinter.Frame(master=tkTop, width=600, bg="gray")
+AutoFrame = tkinter.Frame(master=tkTop, height=200, width=600, bg="gray")
 AutoLable = tkinter.Label(master=AutoFrame, text='Automated Controls', font=("Courier", 12, 'bold'), bg="gray").pack(
-    side='top', ipadx=10, padx=10, pady=40)  # Automated controls lable
+    side='top')  # Automated controls lable
 
 button_Automated_on_off = tkinter.Button(AutoFrame,
                                          text="Turn Automated Controls on/off",
@@ -176,7 +205,7 @@ button_Automated_on_off = tkinter.Button(AutoFrame,
                                          bd=5,
                                          activebackground='green'
                                          )
-button_Automated_on_off.pack(side='top', ipadx=0, padx=0, pady=0)
+button_Automated_on_off.pack(side='top', ipadx=0, padx=0, pady=20)
 
 varLabel = tkinter.IntVar()
 tkLabel = tkinter.Label(master=AutoFrame, textvariable=varLabel, bg="gray")
@@ -199,7 +228,74 @@ button_UpdateTarget = tkinter.Button(AutoFrame,
 button_UpdateTarget.pack(side='left', ipadx=0, padx=20, pady=20)
 
 
-AutoFrame.pack(fill=tkinter.BOTH, side=tkinter.LEFT, expand=True)
+AutoFrame.grid(row = 1, column = 1, stick='N')
+
+# Fill in manual wire feed frame
+ManualFrameWF = tkinter.Frame(master=tkTop, height=200, width=600)
+ManWFLabel = tkinter.Label(master=ManualFrameWF,
+                           text='Manual Wire Feed Controls',
+                           font=("Courier", 12, 'bold')).grid(row=0, column=0, rowspan = 1, columnspan = 6, pady=20)  # Manual wire feed controls label
+
+button_FeedWireBack = tkinter.Button(ManualFrameWF,
+                                     text="Backward",
+                                     command=buttonCommand_FeedWireBackward,
+                                     height=2,
+                                     fg="black",
+                                     width=15,
+                                     bd=5,
+                                     activebackground='green')
+button_FeedWireBack.grid(row=1,column=0, columnspan=3, pady=20)
+
+button_FeedWireFwd = tkinter.Button(master=ManualFrameWF,
+                                     text="Forward",
+                                     command=buttonCommand_FeedWireForward,
+                                     height=2,
+                                     fg="black",
+                                     width=15,
+                                     bd=5,
+                                     activebackground='green')
+button_FeedWireFwd.grid(row=1, column=3, columnspan=3, pady=20)
+
+ManualFrameWF.grid(row=2, column=0, pady=20)
+
+# Fill in automatic wire feed frame
+AutoFrameWF = tkinter.Frame(master=tkTop, height=200, width=600, bg='gray')
+AutoFrameWFLabel = tkinter.Label(master=AutoFrameWF,
+                           text='Automatic Wire Feed Controls',
+                           font=("Courier", 12, 'bold'),
+                           bg="gray").grid(row=0, column=0, columnspan=3, pady=20)  # Automatic wire feed controls label
+
+button_AutoWF_OnOff = tkinter.Button(AutoFrameWF,
+                                     text="Automatic Wire Feed Speed On/Off",
+                                     command=buttonCommand_updateAutoOnOff,
+                                     height=2,
+                                     fg="black",
+                                     width=30,
+                                     bd=5,
+                                     activebackground='green'
+                                     )
+button_AutoWF_OnOff.grid(row=1, column=0, columnspan=3, padx=10)
+
+varLabel1 = tkinter.IntVar()
+AutoWFLabel = tkinter.Label(master=AutoFrameWF, textvariable=varLabel1, bg="gray").grid(row=2, column=1)
+
+AutoFrameWF.grid(row=2,column=1, pady=20, sticky='N')
+
+
+TargetSpeedLabel = tkinter.Label(master=AutoFrameWF, text='Enter Target Speed [ft/s]: ', font=("Courier", 12), bg="gray").grid(row=3,column=0, padx=10)  # Manual wire feed speed label
+TargetSpeedEntry = tkinter.Entry(AutoFrameWF)
+TargetSpeedEntry.grid(row=3, column=1, padx=10)
+
+button_UpdateTarget = tkinter.Button(AutoFrameWF,
+                                     text="Update Target",
+                                     command=buttonCommand_updateTargetSpeed,
+                                     height=2,
+                                     fg="black",
+                                     width=15,
+                                     bd=5,
+                                     activebackground='green'
+                                     )
+button_UpdateTarget.grid(row=3, column=2, padx=10)
 
 tkinter.mainloop() # run loop watching for gui interactions
 
