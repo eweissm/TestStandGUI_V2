@@ -78,8 +78,8 @@ def buttonCommand_FeedWireBackward():  #manual control for feeding the wire back
     print(bytes('KE', 'UTF-8'))
 
 def buttonCommand_STOP(): # manual control for stopping wire feed
-    ser.write(bytes('SE','UTF-8')) # wire stop signal
-    print(bytes('KE','UTF-8'))
+    ser.write(bytes('JE','UTF-8')) # wire stop signal
+    print(bytes('JE','UTF-8'))
 
 def buttonCommand_updateTargetSpeed(): #Reads the txt entry and sends to serial message arduino to update target speed
     global TargetSpeed
