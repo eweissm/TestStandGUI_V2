@@ -89,23 +89,38 @@ def buttonCommand_updateTargetSpeed(): #Reads the txt entry and sends to serial 
     print(bytes('S'+str(int(TargetSpeed))+'E', 'UTF-8'))
 
 def buttonCommand_updateAutoOnOff(): # Toggles between manual and automated control of wire feed speed
-    global Automated_Controls_state
+    global Automated_Controls_stateWF
 
     # if we are in automated controls --> set to manual--> else set controls to automatic
-    if Automated_Controls_state == 1:
-        Automated_Controls_state = 0
+    if Automated_Controls_stateWF == 1:
+        Automated_Controls_stateWF = 0
         varLabel1.set("Automated Wire Feed Controls: Off ")
         ser.write(bytes('NE', 'UTF-8'))  # Manual Signal
         print(bytes('NE', 'UTF-8'))
     else:
-        Automated_Controls_state = 1
+        Automated_Controls_stateWF = 1
         varLabel1.set("Automated Wire Feed Controls: On ")
         ser.write(bytes('GE', 'UTF-8'))  # Automated Signal
         print(bytes('GE', 'UTF-8'))
+def buttonCommand_RotateCW(): # manual control for rotating platform clockwise
+    ser.write(bytes('ZE', 'UTF-8'))   # Rotate platform clockwise signal
+    print(bytes('ZE', 'UTF-8'))
+
+def buttonCommand_RotateCCW(): # manual control for rotating platform clockwise
+    ser.write(bytes('XE', 'UTF-8'))   # Rotate platform clockwise signal
+    print(bytes('XE', 'UTF-8'))
+
+def buttonCommand_Rotate(): # manual control for rotating platform clockwise
+    global TargetAngle
+    TargetAngle = TargetAngleEntry.get()
+    TargetAngle = float(TargetAngle)/0.0177
+    ser.write(bytes('C'+str(int(TargetAngle))+'E', 'UTF-8'))
+    print(bytes('C'+str(int(TargetAngle))+'E', 'UTF-8'))
+
 
 # declare the automated controls to default at 0 (manual controls)
 Automated_Controls_state = 0
-
+Automated_Controls_stateWF = 0
 
 # Set up Serial Communication with Arduino------------------------------------------------------------------------------
 ser = serial.Serial('com3', 9600,writeTimeout=1)  # create Serial Object
@@ -122,7 +137,7 @@ Title = tkinter.Label(tkTop,text='Test Stand Controls', font=("Courier", 14, 'bo
 
 # Fill in the Manual controls Side--------------------------------------------------------------------------------------
 ManualFrame = tkinter.Frame(master=tkTop, height=200, width=600) # create frame for the manual controls
-ManualLable = tkinter.Label(master=ManualFrame, text='Manual Controls',
+ManualLable = tkinter.Label(master=ManualFrame, text='Manual Stand Height Controls',
                             font=("Courier", 12, 'bold')).pack()  # manual controls lable
 ManualFrame.grid(row=1, column=0)
 
@@ -198,7 +213,7 @@ RightButtonsFrame.pack(fill=tkinter.BOTH, side=tkinter.LEFT, expand=True)
 
 # Fill in the Automated controls Side----------------------------------------------------------------------------------------------------------------------------------------
 AutoFrame = tkinter.Frame(master=tkTop, height=200, width=600, bg="gray")
-AutoLable = tkinter.Label(master=AutoFrame, text='Automated Controls', font=("Courier", 12, 'bold'), bg="gray").pack(
+AutoLable = tkinter.Label(master=AutoFrame, text='Automated Stand Height Controls', font=("Courier", 12, 'bold'), bg="gray").pack(
     side='top')  # Automated controls lable
 
 button_Automated_on_off = tkinter.Button(AutoFrame,
@@ -311,6 +326,11 @@ button_UpdateTarget = tkinter.Button(AutoFrameWF,
                                      activebackground='green'
                                      )
 button_UpdateTarget.grid(row=3, column=2, padx=10)
+
+#Fill in rotating platform manual control
+ManualFrameRP = tkinter.Frame(master=tkTop, height=200, width=600)
+ManualLabelRP = tkinter.Label(master=ManualFrameRP, text='Manual Platform Controls', font=("Courier", 12)).grid()
+
 
 tkinter.mainloop() # run loop watching for gui interactions
 
