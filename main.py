@@ -84,6 +84,7 @@ def buttonCommand_STOP(): # manual control for stopping wire feed
 def buttonCommand_updateTargetSpeed(): #Reads the txt entry and sends to serial message arduino to update target speed
     global TargetSpeed
     TargetSpeed = TargetSpeedEntry.get()
+    TargetSpeed = TargetSpeed/0.0177
     ser.write(bytes('S'+str(int(TargetSpeed))+'E', 'UTF-8'))
     print(bytes('S'+str(int(TargetSpeed))+'E', 'UTF-8'))
 
@@ -296,7 +297,7 @@ AutoWFLabel = tkinter.Label(master=AutoFrameWF, textvariable=varLabel1, bg="gray
 AutoFrameWF.grid(row=2,column=1, pady=20, sticky='N')
 
 
-TargetSpeedLabel = tkinter.Label(master=AutoFrameWF, text='Enter Target Speed [ft/s]: ', font=("Courier", 12), bg="gray").grid(row=3,column=0, padx=10)  # Manual wire feed speed label
+TargetSpeedLabel = tkinter.Label(master=AutoFrameWF, text='Enter Target Speed [in/s]: ', font=("Courier", 12), bg="gray").grid(row=3,column=0, padx=10)  # Manual wire feed speed label
 TargetSpeedEntry = tkinter.Entry(AutoFrameWF)
 TargetSpeedEntry.grid(row=3, column=1, padx=10)
 
