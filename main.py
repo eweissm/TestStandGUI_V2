@@ -145,6 +145,14 @@ def buttonCommand_updateTargetAngleSpeed(): #Reads the txt entry and sends to se
     ser.write(bytes('I'+str(int(TargetAngleSpeed))+'E', 'UTF-8'))
     print(bytes('I'+str(int(TargetAngleSpeed))+'E', 'UTF-8'))
 
+def buttonCommand_StartRotation():
+    global NumberOfTurns
+    NumberOfTurns = NumberOfTurnsEntry.get()
+
+    ser.write(bytes('Y'+str(int(NumberOfTurns))+'E', 'UTF-8'))
+    print(bytes('Y'+str(int(NumberOfTurns))+'E', 'UTF-8'))
+
+
 # declare the automated controls to default at 0 (manual controls)
 Automated_Controls_state = 0
 Automated_Controls_stateWF = 0
@@ -192,7 +200,7 @@ button_left_state = tkinter.Button(LeftButtonsFrame,
                                    bd=5,
                                    activebackground='green'
                                    )
-button_left_state.pack(side='top', ipadx=10, padx=10, pady=40)
+button_left_state.pack(side='top', ipadx=10, padx=10, pady=10)
 
 button_right_state = tkinter.Button(LeftButtonsFrame,
                                     text="Right",
@@ -203,7 +211,7 @@ button_right_state = tkinter.Button(LeftButtonsFrame,
                                     bd=5,
                                     activebackground='green'
                                     )
-button_right_state.pack(side='top', ipadx=10, padx=10, pady=40)
+button_right_state.pack(side='top', ipadx=10, padx=10, pady=10)
 
 button_both_state = tkinter.Button(LeftButtonsFrame,
                                    text="Both",
@@ -214,7 +222,7 @@ button_both_state = tkinter.Button(LeftButtonsFrame,
                                    bd=5,
                                    activebackground='green'
                                    )
-button_both_state.pack(side='top', ipadx=10, padx=10, pady=40)
+button_both_state.pack(side='top', ipadx=10, padx=10, pady=10)
 
 ActuatorSelectionLabel = tkinter.IntVar()
 ActuatorSelection = tkinter.Label(master=LeftButtonsFrame, textvariable=ActuatorSelectionLabel)
@@ -230,7 +238,7 @@ button_up_state = tkinter.Button(RightButtonsFrame,
                                  bd=5,
                                  activebackground='green'
                                  )
-button_up_state.pack(side='top', ipadx=10, padx=10, pady=40)
+button_up_state.pack(side='top', ipadx=10, padx=10, pady=10)
 
 button_down_state = tkinter.Button(RightButtonsFrame,
                                    text="Down",
@@ -241,7 +249,7 @@ button_down_state = tkinter.Button(RightButtonsFrame,
                                    bd=5,
                                    activebackground='green'
                                    )
-button_down_state.pack(side='top', ipadx=10, padx=10, pady=40)
+button_down_state.pack(side='top', ipadx=10, padx=10, pady=10)
 
 LeftButtonsFrame.pack(fill=tkinter.BOTH, side=tkinter.LEFT, expand=True)
 RightButtonsFrame.pack(fill=tkinter.BOTH, side=tkinter.LEFT, expand=True)
@@ -260,7 +268,7 @@ button_Automated_on_off = tkinter.Button(AutoFrame,
                                          bd=5,
                                          activebackground='green'
                                          )
-button_Automated_on_off.pack(side='top', ipadx=0, padx=0, pady=20)
+button_Automated_on_off.pack(side='top', ipadx=0, padx=0, pady=10)
 
 varLabel = tkinter.IntVar()
 tkLabel = tkinter.Label(master=AutoFrame, textvariable=varLabel, bg="gray")
@@ -281,7 +289,7 @@ button_UpdateTarget = tkinter.Button(AutoFrame,
                                      bd=5,
                                      activebackground='green'
                                      )
-button_UpdateTarget.pack(side='left', ipadx=0, padx=20, pady=20)
+button_UpdateTarget.pack(side='left', ipadx=0, padx=20, pady=10)
 
 
 AutoFrame.grid(row = 1, column = 1, stick='N')
