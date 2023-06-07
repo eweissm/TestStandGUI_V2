@@ -147,10 +147,15 @@ def buttonCommand_updateTargetAngleSpeed(): #Reads the txt entry and sends to se
 
 def buttonCommand_StartRotation():
     global NumberOfTurns
+    global DeltaH
     NumberOfTurns = NumberOfTurnsEntry.get()
+    DeltaH = DecreaseHeightEntry.get()
 
     ser.write(bytes('Y'+str(int(NumberOfTurns))+'E', 'UTF-8'))
     print(bytes('Y'+str(int(NumberOfTurns))+'E', 'UTF-8'))
+
+    ser.write(bytes('Q'+str(int(DeltaH))+'E', 'UTF-8'))
+    print(bytes('Q'+str(int(DeltaH))+'E', 'UTF-8'))
 
 
 # declare the automated controls to default at 0 (manual controls)
@@ -455,6 +460,30 @@ button_UpdateTargetAngleSpeed = tkinter.Button(AutoFrameRP,
 button_UpdateTargetAngleSpeed.grid(row=3, column=2, padx=10)
 
 AutoFrameRP.grid(row=3, column=1)
+
+# Fill in Rotation plus h mm decrease frame
+RotationFrame = tkinter.Frame(master=tkTop, height=200, width=600)
+RotationLabel = tkinter.Label(master=RotationFrame,  text='Decrease h [mm] per 360 [deg] Rotation Function', font=("Courier", 12, 'bold')).grid(row=0, column = 0, columnspan=2)
+
+NumberOfTurnsLabel = tkinter.Label(master=RotationFrame,  text='Number of rotations:', font=("Courier", 12)).grid(row=1, column = 0)
+NumberOfTurnsEntry = tkinter.Entry(RotationFrame)
+NumberOfTurnsEntry.grid(row=1, column=1, pady=5, padx=20)
+
+DecreaseHeightLabel = tkinter.Label(master=RotationFrame, text='Delta h [mm]:', font=("Courier", 12)).grid(row=2, column=0)
+DecreaseHeightEntry = tkinter.Entry(RotationFrame)
+DecreaseHeightEntry.grid(row=2, column=1, pady=5, padx=20)
+
+button_StartFunction = tkinter.Button(master=RotationFrame,
+                                      text='START',
+                                      command=buttonCommand_StartRotation,
+                                      height=2,
+                                      fg='black',
+                                      width=15,
+                                      bd=5,
+                                      activebackground='green')
+button_StartFunction.grid(row=3, column=0, columnspan=2, pady=5)
+
+RotationFrame.grid(row=4, column=0)
 
 tkinter.mainloop() # run loop watching for gui interactions
 
