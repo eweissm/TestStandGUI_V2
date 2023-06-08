@@ -146,17 +146,18 @@ def buttonCommand_updateTargetAngleSpeed(): #Reads the txt entry and sends to se
     print(bytes('I'+str(int(TargetAngleSpeed))+'E', 'UTF-8'))
 
 def buttonCommand_StartRotation():
-    global NumberOfTurns
     global DeltaH
-    NumberOfTurns = NumberOfTurnsEntry.get()
     DeltaH = DecreaseHeightEntry.get()
-
-    ser.write(bytes('Y'+str(int(NumberOfTurns))+'E', 'UTF-8'))
-    print(bytes('Y'+str(int(NumberOfTurns))+'E', 'UTF-8'))
 
     ser.write(bytes('Q'+str(int(DeltaH))+'E', 'UTF-8'))
     print(bytes('Q'+str(int(DeltaH))+'E', 'UTF-8'))
 
+def buttonCommand_UpdateNOT():
+    global NumberOfTurns
+    NumberOfTurns = NumberOfTurnsEntry.get()
+
+    ser.write(bytes('Y'+str(int(NumberOfTurns))+'E', 'UTF-8'))
+    print(bytes('Y'+str(int(NumberOfTurns))+'E', 'UTF-8'))
 
 # declare the automated controls to default at 0 (manual controls)
 Automated_Controls_state = 0
@@ -176,7 +177,7 @@ time.sleep(3)  # delay 3 seconds to allow serial com to get established
 
 # Build GUI-------------------------------------------------------------------------------------------------------------
 tkTop = tkinter.Tk()  # Create GUI Box
-tkTop.geometry('1200x1080')  # size of GUI
+tkTop.geometry('1600x1080')  # size of GUI
 tkTop.title("Test Stand Controller")  # title in top left of window
 
 Title = tkinter.Label(tkTop,text='Test Stand Controls', font=("Courier", 14, 'bold')).grid(row=0, column=0, rowspan=1, columnspan=2)  # Title on top middle of screen
@@ -463,15 +464,26 @@ AutoFrameRP.grid(row=3, column=1)
 
 # Fill in Rotation plus h mm decrease frame
 RotationFrame = tkinter.Frame(master=tkTop, height=200, width=600)
-RotationLabel = tkinter.Label(master=RotationFrame,  text='Decrease h [mm] per 360 [deg] Rotation Function', font=("Courier", 12, 'bold')).grid(row=0, column = 0, columnspan=2)
+RotationLabel = tkinter.Label(master=RotationFrame,  text='Decrease h [mm] per 360 [deg] Rotation Function', font=("Courier", 12, 'bold')).grid(row=0, column = 0, columnspan=6)
 
-NumberOfTurnsLabel = tkinter.Label(master=RotationFrame,  text='Number of rotations:', font=("Courier", 12)).grid(row=1, column = 0)
+NumberOfTurnsLabel = tkinter.Label(master=RotationFrame,  text='Number of rotations:', font=("Courier", 12)).grid(row=1, column = 0, columnspan=2, padx=10, pady=5)
 NumberOfTurnsEntry = tkinter.Entry(RotationFrame)
-NumberOfTurnsEntry.grid(row=1, column=1, pady=5, padx=20)
+NumberOfTurnsEntry.grid(row=1, column=2, columnspan=2, pady=5, padx=10)
 
-DecreaseHeightLabel = tkinter.Label(master=RotationFrame, text='Delta h [mm]:', font=("Courier", 12)).grid(row=2, column=0)
+button_UpdateNOT = tkinter.Button(master=RotationFrame,
+                                  text="Update",
+                                  command=buttonCommand_UpdateNOT,
+                                  height=2,
+                                  fg="black",
+                                  width=15,
+                                  bd=5,
+                                  activebackground='green'
+                                  )
+button_UpdateNOT.grid(row=1, column=5, columnspan=2, pady=5, padx=10)
+
+DecreaseHeightLabel = tkinter.Label(master=RotationFrame, text='Delta h [mm]:', font=("Courier", 12)).grid(row=2, column=0, columnspan=3)
 DecreaseHeightEntry = tkinter.Entry(RotationFrame)
-DecreaseHeightEntry.grid(row=2, column=1, pady=5, padx=20)
+DecreaseHeightEntry.grid(row=2, column=3, columnspan=3, pady=5, padx=20)
 
 button_StartFunction = tkinter.Button(master=RotationFrame,
                                       text='START',
@@ -481,7 +493,7 @@ button_StartFunction = tkinter.Button(master=RotationFrame,
                                       width=15,
                                       bd=5,
                                       activebackground='green')
-button_StartFunction.grid(row=3, column=0, columnspan=2, pady=5)
+button_StartFunction.grid(row=3, column=0, columnspan=6, pady=5)
 
 RotationFrame.grid(row=4, column=0)
 
