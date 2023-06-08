@@ -159,6 +159,10 @@ def buttonCommand_UpdateNOT():
     ser.write(bytes('Y'+str(int(NumberOfTurns))+'E', 'UTF-8'))
     print(bytes('Y'+str(int(NumberOfTurns))+'E', 'UTF-8'))
 
+def buttonCommand_STOPEVERYTHING():
+    ser.write(bytes('WE', 'UTF-8'))  # STOP Signal
+    print(bytes('WE', 'UTF-8'))
+
 # declare the automated controls to default at 0 (manual controls)
 Automated_Controls_state = 0
 Automated_Controls_stateWF = 0
@@ -496,6 +500,16 @@ button_StartFunction = tkinter.Button(master=RotationFrame,
 button_StartFunction.grid(row=3, column=0, columnspan=6, pady=5)
 
 RotationFrame.grid(row=4, column=0)
+
+button_STOPEVERYTHING = tkinter.Button(master=tkTop,
+                                       text='STOP ALL OPERATIONS',
+                                       command=buttonCommand_STOPEVERYTHING,
+                                       height=10,
+                                       fg='white',
+                                       width=50,
+                                       background='red',
+                                       bd=5)
+button_STOPEVERYTHING.grid(row=4,column=1)
 
 tkinter.mainloop() # run loop watching for gui interactions
 
