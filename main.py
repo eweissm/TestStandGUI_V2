@@ -70,22 +70,22 @@ def buttonCommand_moveDown():  # manual control for moving down
     print(bytes('DE', 'UTF-8'))
 
 def buttonCommand_FeedWireForward():  # manual control for feeding the wire forward
-    ser2.write(bytes('FE', 'UTF-8'))   # wire forward signal
+    ser.write(bytes('FE', 'UTF-8'))   # wire forward signal
     print(bytes('FE', 'UTF-8'))
 
 def buttonCommand_FeedWireBackward():  #manual control for feeding the wire backward
-    ser2.write(bytes('KE', 'UTF-8'))   # wire backward signal
+    ser.write(bytes('KE', 'UTF-8'))   # wire backward signal
     print(bytes('KE', 'UTF-8'))
 
 def buttonCommand_STOP(): # manual control for stopping wire feed
-    ser2.write(bytes('JE','UTF-8')) # wire stop signal
+    ser.write(bytes('JE','UTF-8')) # wire stop signal
     print(bytes('JE','UTF-8'))
 
 def buttonCommand_updateTargetSpeed(): #Reads the txt entry and sends to serial message arduino to update target speed
     global TargetSpeed
     TargetSpeed = TargetSpeedEntry.get()
     TargetSpeed = float(TargetSpeed)/0.0177
-    ser2.write(bytes('S'+str(int(TargetSpeed))+'E', 'UTF-8'))
+    ser.write(bytes('S'+str(int(TargetSpeed))+'E', 'UTF-8'))
     print(bytes('S'+str(int(TargetSpeed))+'E', 'UTF-8'))
 
 def buttonCommand_updateAutoOnOff(): # Toggles between manual and automated control of wire feed speed
@@ -95,32 +95,32 @@ def buttonCommand_updateAutoOnOff(): # Toggles between manual and automated cont
     if Automated_Controls_stateWF == 1:
         Automated_Controls_stateWF = 0
         varLabel1.set("Automated Wire Feed Controls: Off ")
-        ser2.write(bytes('NE', 'UTF-8'))  # Manual Signal
+        ser.write(bytes('NE', 'UTF-8'))  # Manual Signal
         print(bytes('NE', 'UTF-8'))
     else:
         Automated_Controls_stateWF = 1
         varLabel1.set("Automated Wire Feed Controls: On ")
-        ser2.write(bytes('GE', 'UTF-8'))  # Automated Signal
+        ser.write(bytes('GE', 'UTF-8'))  # Automated Signal
         print(bytes('GE', 'UTF-8'))
 def buttonCommand_RotateCW(): # manual control for rotating platform clockwise
     global RotateDirectionState
     RotateDirectionState = 1
     RotateDirection.set("Clockwise")
-    ser.write(bytes('ZE', 'UTF-8'))   # Rotate platform clockwise signal
+    ser2.write(bytes('ZE', 'UTF-8'))   # Rotate platform clockwise signal
     print(bytes('ZE', 'UTF-8'))
 
 def buttonCommand_RotateCCW(): # manual control for rotating platform counterclockwise
     global RotateDirectionState
     RotateDirectionState = 0
     RotateDirection.set("Counter-Clockwise")
-    ser.write(bytes('XE', 'UTF-8'))   # Rotate platform clockwise signal
+    ser2.write(bytes('XE', 'UTF-8'))   # Rotate platform clockwise signal
     print(bytes('XE', 'UTF-8'))
 
 def buttonCommand_Rotate(): # manual control for rotating platform clockwise
     global TargetAngle
     TargetAngle = TargetAngleEntry.get()
 
-    ser.write(bytes('C'+str(int(TargetAngle))+'E', 'UTF-8'))
+    ser2.write(bytes('C'+str(int(TargetAngle))+'E', 'UTF-8'))
     print(bytes('C'+str(int(TargetAngle))+'E', 'UTF-8'))
 
 def buttonCommand_updateAutoRPOnOff(): # Toggles between manual and automated control of rotating platform speed
@@ -130,17 +130,20 @@ def buttonCommand_updateAutoRPOnOff(): # Toggles between manual and automated co
     if Automated_Controls_stateRP == 1:
         Automated_Controls_stateRP = 0
         AutoRPLabel.set("Automated Rotating Platform Controls: Off ")
-        ser.write(bytes('OE', 'UTF-8'))  # Manual Signal
+        ser2.write(bytes('OE', 'UTF-8'))  # Manual Signal
         print(bytes('OE', 'UTF-8'))
     else:
         Automated_Controls_stateRP = 1
         AutoRPLabel.set("Automated Rotating Platform Controls: On ")
-        ser.write(bytes('PE', 'UTF-8'))  # Automated Signal
+        ser2.write(bytes('PE', 'UTF-8'))  # Automated Signal
         print(bytes('PE', 'UTF-8'))
 
 def buttonCommand_updateTargetAngleSpeed(): #Reads the txt entry and sends to serial message arduino to update target speed
     global TargetAngleSpeed
     TargetAngleSpeed = TargetAngleSpeedEntry.get()
+
+    ser2.write(bytes('I'+str(int(TargetAngleSpeed))+'E', 'UTF-8'))
+    print(bytes('I'+str(int(TargetAngleSpeed))+'E', 'UTF-8'))
 
     ser.write(bytes('I'+str(int(TargetAngleSpeed))+'E', 'UTF-8'))
     print(bytes('I'+str(int(TargetAngleSpeed))+'E', 'UTF-8'))
@@ -152,6 +155,9 @@ def buttonCommand_StartRotation():
     ser.write(bytes('Q'+str(int(DeltaH))+'E', 'UTF-8'))
     print(bytes('Q'+str(int(DeltaH))+'E', 'UTF-8'))
 
+    ser2.write(bytes('QE', 'UTF-8'))
+    print(bytes('QE', 'UTF-8'))
+
 def buttonCommand_UpdateNOT():
     global NumberOfTurns
     NumberOfTurns = NumberOfTurnsEntry.get()
@@ -159,6 +165,8 @@ def buttonCommand_UpdateNOT():
     ser.write(bytes('Y'+str(int(NumberOfTurns))+'E', 'UTF-8'))
     print(bytes('Y'+str(int(NumberOfTurns))+'E', 'UTF-8'))
 
+    ser2.write(bytes('Y'+str(int(NumberOfTurns))+'E', 'UTF-8'))
+    print(bytes('Y'+str(int(NumberOfTurns))+'E', 'UTF-8'))
 def buttonCommand_STOPEVERYTHING():
     ser.write(bytes('WE', 'UTF-8'))  # STOP Signal
     print(bytes('WE', 'UTF-8'))
