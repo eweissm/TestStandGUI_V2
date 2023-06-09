@@ -70,22 +70,22 @@ def buttonCommand_moveDown():  # manual control for moving down
     print(bytes('DE', 'UTF-8'))
 
 def buttonCommand_FeedWireForward():  # manual control for feeding the wire forward
-    ser.write(bytes('FE', 'UTF-8'))   # wire forward signal
+    ser2.write(bytes('FE', 'UTF-8'))   # wire forward signal
     print(bytes('FE', 'UTF-8'))
 
 def buttonCommand_FeedWireBackward():  #manual control for feeding the wire backward
-    ser.write(bytes('KE', 'UTF-8'))   # wire backward signal
+    ser2.write(bytes('KE', 'UTF-8'))   # wire backward signal
     print(bytes('KE', 'UTF-8'))
 
 def buttonCommand_STOP(): # manual control for stopping wire feed
-    ser.write(bytes('JE','UTF-8')) # wire stop signal
+    ser2.write(bytes('JE','UTF-8')) # wire stop signal
     print(bytes('JE','UTF-8'))
 
 def buttonCommand_updateTargetSpeed(): #Reads the txt entry and sends to serial message arduino to update target speed
     global TargetSpeed
     TargetSpeed = TargetSpeedEntry.get()
     TargetSpeed = float(TargetSpeed)/0.0177
-    ser.write(bytes('S'+str(int(TargetSpeed))+'E', 'UTF-8'))
+    ser2.write(bytes('S'+str(int(TargetSpeed))+'E', 'UTF-8'))
     print(bytes('S'+str(int(TargetSpeed))+'E', 'UTF-8'))
 
 def buttonCommand_updateAutoOnOff(): # Toggles between manual and automated control of wire feed speed
@@ -95,12 +95,12 @@ def buttonCommand_updateAutoOnOff(): # Toggles between manual and automated cont
     if Automated_Controls_stateWF == 1:
         Automated_Controls_stateWF = 0
         varLabel1.set("Automated Wire Feed Controls: Off ")
-        ser.write(bytes('NE', 'UTF-8'))  # Manual Signal
+        ser2.write(bytes('NE', 'UTF-8'))  # Manual Signal
         print(bytes('NE', 'UTF-8'))
     else:
         Automated_Controls_stateWF = 1
         varLabel1.set("Automated Wire Feed Controls: On ")
-        ser.write(bytes('GE', 'UTF-8'))  # Automated Signal
+        ser2.write(bytes('GE', 'UTF-8'))  # Automated Signal
         print(bytes('GE', 'UTF-8'))
 def buttonCommand_RotateCW(): # manual control for rotating platform clockwise
     global RotateDirectionState
@@ -176,6 +176,7 @@ RotateDirectionState = 0
 
 # Set up Serial Communication with Arduino------------------------------------------------------------------------------
 ser = serial.Serial('com3', 9600,writeTimeout=1)  # create Serial Object
+ser2 = serial.Serial('com4', 9600, writeTimeout=1) # Serial object for Nano
 time.sleep(3)  # delay 3 seconds to allow serial com to get established
 
 
