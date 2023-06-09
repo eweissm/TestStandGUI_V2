@@ -182,14 +182,14 @@ time.sleep(3)  # delay 3 seconds to allow serial com to get established
 
 # Build GUI-------------------------------------------------------------------------------------------------------------
 tkTop = tkinter.Tk()  # Create GUI Box
-tkTop.geometry('1600x1080')  # size of GUI
+tkTop.geometry('1920x1080')  # size of GUI
 tkTop.title("Test Stand Controller")  # title in top left of window
 
 Title = tkinter.Label(tkTop,text='Test Stand Controls', font=("Courier", 14, 'bold')).grid(row=0, column=0, rowspan=1, columnspan=2)  # Title on top middle of screen
 
 
 # Fill in the Manual controls Side--------------------------------------------------------------------------------------
-ManualFrame = tkinter.Frame(master=tkTop, height=200, width=600) # create frame for the manual controls
+ManualFrame = tkinter.Frame(master=tkTop, height=200, width=900) # create frame for the manual controls
 ManualLable = tkinter.Label(master=ManualFrame, text='Manual Stand Height Controls',
                             font=("Courier", 12, 'bold')).pack()  # manual controls lable
 ManualFrame.grid(row=1, column=0)
@@ -266,7 +266,7 @@ LeftButtonsFrame.pack(fill=tkinter.BOTH, side=tkinter.LEFT, expand=True)
 RightButtonsFrame.pack(fill=tkinter.BOTH, side=tkinter.LEFT, expand=True)
 
 # Fill in the Automated controls Side----------------------------------------------------------------------------------------------------------------------------------------
-AutoFrame = tkinter.Frame(master=tkTop, height=200, width=600, bg="gray")
+AutoFrame = tkinter.Frame(master=tkTop, height=200, width=900, bg="gray")
 AutoLable = tkinter.Label(master=AutoFrame, text='Automated Stand Height Controls', font=("Courier", 12, 'bold'), bg="gray").pack(
     side='top')  # Automated controls lable
 
@@ -306,7 +306,7 @@ button_UpdateTarget.pack(side='left', ipadx=0, padx=20, pady=10)
 AutoFrame.grid(row = 1, column = 1, stick='N')
 
 # Fill in manual wire feed frame
-ManualFrameWF = tkinter.Frame(master=tkTop, height=200, width=600)
+ManualFrameWF = tkinter.Frame(master=tkTop, height=200, width=900)
 ManWFLabel = tkinter.Label(master=ManualFrameWF,
                            text='Manual Wire Feed Controls',
                            font=("Courier", 12, 'bold')).grid(row=0, column=0, rowspan = 1, columnspan = 3, pady=20)  # Manual wire feed controls label
@@ -384,7 +384,7 @@ button_UpdateTarget = tkinter.Button(AutoFrameWF,
 button_UpdateTarget.grid(row=3, column=2, padx=10)
 
 #Fill in rotating platform manual control
-ManualFrameRP = tkinter.Frame(master=tkTop, height=200, width=600)
+ManualFrameRP = tkinter.Frame(master=tkTop, height=200, width=900)
 ManualLabelRP = tkinter.Label(master=ManualFrameRP, text='Manual Platform Controls', font=("Courier", 12, 'bold')).grid(row=0, column=0, columnspan=6)
 button_Clockwise = tkinter.Button(ManualFrameRP,
                                   text="Clockwise",
@@ -468,7 +468,7 @@ button_UpdateTargetAngleSpeed.grid(row=3, column=2, padx=10)
 AutoFrameRP.grid(row=3, column=1)
 
 # Fill in Rotation plus h mm decrease frame
-RotationFrame = tkinter.Frame(master=tkTop, height=200, width=600)
+RotationFrame = tkinter.Frame(master=tkTop, height=200, width=900)
 RotationLabel = tkinter.Label(master=RotationFrame,  text='Decrease h [mm] per 360 [deg] Rotation Function', font=("Courier", 12, 'bold')).grid(row=0, column = 0, columnspan=6)
 
 NumberOfTurnsLabel = tkinter.Label(master=RotationFrame,  text='Number of rotations:', font=("Courier", 12)).grid(row=1, column = 0, columnspan=2, padx=10, pady=5)
