@@ -171,6 +171,9 @@ def buttonCommand_STOPEVERYTHING():
     ser.write(bytes('WE', 'UTF-8'))  # STOP Signal
     print(bytes('WE', 'UTF-8'))
 
+    ser2.write(bytes('WE', 'UTF-8'))  # STOP Signal
+    print(bytes('WE', 'UTF-8'))
+
 # declare the automated controls to default at 0 (manual controls)
 Automated_Controls_state = 0
 Automated_Controls_stateWF = 0
