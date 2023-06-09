@@ -407,7 +407,7 @@ button_CounterClockwise.grid(row=1, column=3, columnspan=3, padx=10, pady=20)
 
 RotateDirection = tkinter.IntVar()
 RotateDirectionLabel = tkinter.Label(master=ManualFrameRP, textvariable=RotateDirection, font=("Courier", 12)).grid(row=2, column=0, columnspan=6, padx=10, ipadx=20, pady=5)
-RotateDirection.set("Clockwise")
+RotateDirection.set("Counter-Clockwise")
 
 TargetAngleLabel = tkinter.Label(master=ManualFrameRP, text="Rotate [deg]:", font=("Courier", 12)).grid(row=3, column=0, columnspan=2, padx=10, pady=5)
 TargetAngleEntry = tkinter.Entry(ManualFrameRP)
