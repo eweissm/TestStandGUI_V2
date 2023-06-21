@@ -84,7 +84,7 @@ def buttonCommand_STOP(): # manual control for stopping wire feed
 def buttonCommand_updateTargetSpeed(): #Reads the txt entry and sends to serial message arduino to update target speed
     global TargetSpeed
     TargetSpeed = TargetSpeedEntry.get()
-    TargetSpeed = float(TargetSpeed)/0.0177
+    TargetSpeed = float(TargetSpeed)/0.074
     ser.write(bytes('S'+str(int(TargetSpeed))+'E', 'UTF-8'))
     print(bytes('S'+str(int(TargetSpeed))+'E', 'UTF-8'))
 
