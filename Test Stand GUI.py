@@ -97,7 +97,7 @@ def buttonCommand_updateTargetSpeed(): #Reads the txt entry and sends to serial 
 
     global TargetSpeed
     TargetSpeed = TargetSpeedEntry.get()
-    TargetSpeed = float(TargetSpeed)/0.0766
+    TargetSpeed = float(TargetSpeed)
     ser.write(bytes('S'+str(int(TargetSpeed))+'E', 'UTF-8'))
     print(bytes('S'+str(int(TargetSpeed))+'E', 'UTF-8'))
     time.sleep(T)
