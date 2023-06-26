@@ -579,7 +579,7 @@ SerPort1Entry.grid(row=1,column=1, padx=5, pady=10)
 
 SerPort1Label21 = tkinter.IntVar()
 SerPort1Label2 = tkinter.Label(master=SerPortSelFrame, textvariable=SerPort1Label21,font=("Courier", 12, 'bold')).grid(row=1, column=2, padx=5, pady=10)
-SerPort1Label21.set('com3')
+SerPort1Label21.set(SerPort1)
 
 SerPort2Label1 = tkinter.Label(master=SerPortSelFrame, text='Serial Port 2 (Arduino Nano com port):',font=("Courier", 12, 'bold')).grid(row=2, column=0, padx=5, pady=10)
 SerPort2Entry = tkinter.Entry(SerPortSelFrame)
@@ -587,7 +587,7 @@ SerPort2Entry.grid(row=2,column=1, padx=5, pady=10)
 
 SerPort2Label21 = tkinter.IntVar()
 SerPort2Label2 = tkinter.Label(master=SerPortSelFrame, textvariable=SerPort2Label21,font=("Courier", 12, 'bold')).grid(row=2, column=2, padx=5, pady=10)
-SerPort2Label21.set('com6')
+SerPort2Label21.set(SerPort2)
 
 button_SerPortUpdate = tkinter.Button(master=SerPortSelFrame,
                                       text='Update',
