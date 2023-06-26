@@ -230,7 +230,7 @@ RotateDirectionState = 0
 
 # Serial Ports
 SerPort1 = 'com3'
-SerPort2 = 'com6'
+SerPort2 = 'com4'
 
 time.sleep(3)  # delay 3 seconds to allow serial com to get established
 
