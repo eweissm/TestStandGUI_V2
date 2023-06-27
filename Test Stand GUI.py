@@ -416,18 +416,18 @@ button_AutoWF_OnOff = tkinter.Button(AutoFrameWF,
                                      bd=5,
                                      activebackground='green'
                                      )
-button_AutoWF_OnOff.grid(row=1, column=0, columnspan=3, padx=10)
+#button_AutoWF_OnOff.grid(row=1, column=0, columnspan=3, padx=10)
 
 varLabel1 = tkinter.IntVar()
-AutoWFLabel = tkinter.Label(master=AutoFrameWF, textvariable=varLabel1, bg="gray").grid(row=2, column=1)
+#AutoWFLabel = tkinter.Label(master=AutoFrameWF, textvariable=varLabel1, bg="gray").grid(row=2, column=1)
 varLabel1.set("Automated Wire Feed Controls: Off")
 
 AutoFrameWF.grid(row=2,column=1, pady=20, sticky='N')
 
 
-TargetSpeedLabel = tkinter.Label(master=AutoFrameWF, text='Enter Target Speed [in/s]: ', font=("Courier", 12), bg="gray").grid(row=3,column=0, padx=10)  # Manual wire feed speed label
+TargetSpeedLabel = tkinter.Label(master=AutoFrameWF, text='Enter Target Speed [in/s]: ', font=("Courier", 12), bg="gray").grid(row=2,column=0, padx=10)  # Manual wire feed speed label
 TargetSpeedEntry = tkinter.Entry(AutoFrameWF)
-TargetSpeedEntry.grid(row=3, column=1, padx=10)
+TargetSpeedEntry.grid(row=2, column=1, padx=10)
 
 button_UpdateTarget = tkinter.Button(AutoFrameWF,
                                      text="Update Target",
@@ -438,7 +438,7 @@ button_UpdateTarget = tkinter.Button(AutoFrameWF,
                                      bd=5,
                                      activebackground='green'
                                      )
-button_UpdateTarget.grid(row=3, column=2, padx=10)
+button_UpdateTarget.grid(row=2, column=2, padx=10)
 
 #Fill in rotating platform manual control
 ManualFrameRP = tkinter.Frame(master=tkTop, height=200, width=900)
