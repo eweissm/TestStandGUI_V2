@@ -21,8 +21,7 @@ T = 0
 def buttonCommand_setActuatorSelectionLeft(): #set manual controls to actuate only the left actuators
     ser.flushInput()
     ser.flushOutput()
-    ser2.flushInput()
-    ser2.flushOutput()
+
     global ActuatorSelection_state
     ActuatorSelection_state = 0
     ActuatorSelectionLabel.set("Left")
@@ -33,8 +32,7 @@ def buttonCommand_setActuatorSelectionLeft(): #set manual controls to actuate on
 def buttonCommand_setActuatorSelectionRight():  #set manual controls to actuate only the right actuators
     ser.flushInput()
     ser.flushOutput()
-    ser2.flushInput()
-    ser2.flushOutput()
+
     global ActuatorSelection_state
     ActuatorSelection_state = 1
     ActuatorSelectionLabel.set("Right")
@@ -44,8 +42,7 @@ def buttonCommand_setActuatorSelectionRight():  #set manual controls to actuate 
 def buttonCommand_setActuatorSelectionBoth():  #set manual controls to actuate both side of actuators
     ser.flushInput()
     ser.flushOutput()
-    ser2.flushInput()
-    ser2.flushOutput()
+
     global ActuatorSelection_state
     ActuatorSelection_state = 2
     ActuatorSelectionLabel.set("Both")
@@ -55,8 +52,7 @@ def buttonCommand_setActuatorSelectionBoth():  #set manual controls to actuate b
 def buttonCommand_toggleAutomatedControls(): #toggles between manual and automated controls
     ser.flushInput()
     ser.flushOutput()
-    ser2.flushInput()
-    ser2.flushOutput()
+
     global Automated_Controls_state
 
     # if we are in automated controls --> set to manual--> else set controls to automatic
@@ -80,8 +76,7 @@ def buttonCommand_toggleAutomatedControls(): #toggles between manual and automat
 def buttonCommand_updateTargetHeight(): #Reads the txt entry and sends to serial message arduino to update target height
     ser.flushInput()
     ser.flushOutput()
-    ser2.flushInput()
-    ser2.flushOutput()
+
     global TargetHeight
     TargetHeight = TargetHeightEntry.get()
     try:
@@ -94,8 +89,7 @@ def buttonCommand_updateTargetHeight(): #Reads the txt entry and sends to serial
 def buttonCommand_moveUp():  # manual control for moving up
     ser.flushInput()
     ser.flushOutput()
-    ser2.flushInput()
-    ser2.flushOutput()
+
     ser.write(bytes('UE', 'UTF-8'))  # up Signal
     print(bytes('UE', 'UTF-8'))
     time.sleep(T)
@@ -103,16 +97,14 @@ def buttonCommand_moveUp():  # manual control for moving up
 def buttonCommand_moveDown():  # manual control for moving down
     ser.flushInput()
     ser.flushOutput()
-    ser2.flushInput()
-    ser2.flushOutput()
+
     ser.write(bytes('DE', 'UTF-8'))  # down Signal
     print(bytes('DE', 'UTF-8'))
 
 def buttonCommand_FeedWireForward():  # manual control for feeding the wire forward
     ser.flushInput()
     ser.flushOutput()
-    ser2.flushInput()
-    ser2.flushOutput()
+
     time.sleep(T)
     ser.write(bytes('FE', 'UTF-8'))   # wire forward signal
     print(bytes('FE', 'UTF-8'))
@@ -120,12 +112,13 @@ def buttonCommand_FeedWireForward():  # manual control for feeding the wire forw
 def buttonCommand_FeedWireBackward():  #manual control for feeding the wire backward
     ser.flushInput()
     ser.flushOutput()
-    ser2.flushInput()
-    ser2.flushOutput()
+
     ser.write(bytes('KE', 'UTF-8'))   # wire backward signal
     print(bytes('KE', 'UTF-8'))
     time.sleep(T)
 def buttonCommand_STOP(): # manual control for stopping wire feed
+    ser.flushInput()
+    ser.flushOutput()
 
     ser.write(bytes('JE','UTF-8')) # wire stop signal
     print(bytes('JE','UTF-8'))
@@ -133,8 +126,7 @@ def buttonCommand_STOP(): # manual control for stopping wire feed
 def buttonCommand_updateTargetSpeed(): #Reads the txt entry and sends to serial message arduino to update target speed
     ser.flushInput()
     ser.flushOutput()
-    ser2.flushInput()
-    ser2.flushOutput()
+
     global TargetSpeed
     TargetSpeed = TargetSpeedEntry.get()
     TargetSpeed = float(TargetSpeed)
@@ -144,8 +136,7 @@ def buttonCommand_updateTargetSpeed(): #Reads the txt entry and sends to serial 
 def buttonCommand_updateAutoOnOff(): # Toggles between manual and automated control of wire feed speed
     ser.flushInput()
     ser.flushOutput()
-    ser2.flushInput()
-    ser2.flushOutput()
+
     global Automated_Controls_stateWF
 
     # if we are in automated controls --> set to manual--> else set controls to automatic
@@ -162,10 +153,9 @@ def buttonCommand_updateAutoOnOff(): # Toggles between manual and automated cont
 
     time.sleep(T)
 def buttonCommand_RotateCW(): # manual control for rotating platform clockwise
-    ser.flushInput()
-    ser.flushOutput()
     ser2.flushInput()
     ser2.flushOutput()
+
     global RotateDirectionState
     RotateDirectionState = 1
     RotateDirection.set("Clockwise")
@@ -173,10 +163,9 @@ def buttonCommand_RotateCW(): # manual control for rotating platform clockwise
     print(bytes('ZE', 'UTF-8'))
     time.sleep(T)
 def buttonCommand_RotateCCW(): # manual control for rotating platform counterclockwise
-    ser.flushInput()
-    ser.flushOutput()
     ser2.flushInput()
     ser2.flushOutput()
+
     global RotateDirectionState
     RotateDirectionState = 0
     RotateDirection.set("Counter-Clockwise")
@@ -184,10 +173,9 @@ def buttonCommand_RotateCCW(): # manual control for rotating platform counterclo
     print(bytes('XE', 'UTF-8'))
     time.sleep(T)
 def buttonCommand_Rotate(): # manual control for rotating platform clockwise
-    ser.flushInput()
-    ser.flushOutput()
     ser2.flushInput()
     ser2.flushOutput()
+
     global TargetAngle
     TargetAngle = TargetAngleEntry.get()
 
@@ -195,10 +183,9 @@ def buttonCommand_Rotate(): # manual control for rotating platform clockwise
     print(bytes('C'+str(int(TargetAngle))+'E', 'UTF-8'))
     time.sleep(T)
 def buttonCommand_updateAutoRPOnOff(): # Toggles between manual and automated control of rotating platform speed
-    ser.flushInput()
-    ser.flushOutput()
     ser2.flushInput()
     ser2.flushOutput()
+
     global Automated_Controls_stateRP
 
     # if we are in automated controls --> set to manual--> else set controls to automatic
@@ -218,6 +205,7 @@ def buttonCommand_updateTargetAngleSpeed(): #Reads the txt entry and sends to se
     ser.flushOutput()
     ser2.flushInput()
     ser2.flushOutput()
+
     global TargetAngleSpeed
     TargetAngleSpeed = TargetAngleSpeedEntry.get()
 
@@ -243,15 +231,15 @@ def buttonCommand_StartRotation():
     print(bytes('QE', 'UTF-8'))
     time.sleep(T)
 def buttonCommand_UpdateNOT():
-
-
     global ser
     global ser2
     global NumberOfTurns
+
     ser.flushInput()
     ser.flushOutput()
     ser2.flushInput()
     ser2.flushOutput()
+
     NumberOfTurns = NumberOfTurnsEntry.get()
 
     ser.write(bytes('Y'+str(int(NumberOfTurns))+'E', 'UTF-8'))
