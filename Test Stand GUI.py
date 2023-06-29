@@ -130,8 +130,8 @@ def buttonCommand_updateTargetSpeed(): #Reads the txt entry and sends to serial 
     global TargetSpeed
     TargetSpeed = TargetSpeedEntry.get()
     TargetSpeed = float(TargetSpeed)
-    ser.write(bytes('S'+str(int(TargetSpeed))+'E', 'UTF-8'))
-    print(bytes('S'+str(int(TargetSpeed))+'E', 'UTF-8'))
+    ser.write(bytes('S'+str(float(TargetSpeed))+'E', 'UTF-8'))
+    print(bytes('S'+str(float(TargetSpeed))+'E', 'UTF-8'))
     time.sleep(T)
 def buttonCommand_updateAutoOnOff(): # Toggles between manual and automated control of wire feed speed
     ser.flushInput()
