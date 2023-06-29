@@ -213,7 +213,7 @@ def buttonCommand_UpdateSerialPorts():
     SerPort2Label21.set(SerPort2)
 
     # Set up Serial Communication with Arduino------------------------------------------------------------------------------
-    ser = serial.Serial(SerPort1, 9600, writeTimeout=1)  # create Serial Object
+    ser = serial.Serial(SerPort1, 115200, writeTimeout=1)  # create Serial Object
     ser2 = serial.Serial(SerPort2, 9600, writeTimeout=1)  # Serial object for Nano
     time.sleep(T)
 
